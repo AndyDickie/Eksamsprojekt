@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'Wordle.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/andydickie/Documents/GitHub/Eksamsprojekt/Untitled/Wordle/db.sqlite3',
+        'NAME': '/Users/andydickie/Documents/GitHub/Eksamsprojekt/Wordle/db.sqlite3',
     }
 }
 
