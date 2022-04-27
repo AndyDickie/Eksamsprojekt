@@ -1,0 +1,42 @@
+<head>
+    <title>Placement insert</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <style>
+        #header {
+            text-align: center;
+            height:100px;
+            width:1360px;
+            background-color: lightskyblue;
+
+        }
+        #content {
+            height: 200px;
+            width: 400px;
+            background: lightgreen ;
+            margin-top:100px;
+            margin-left: 500px ;
+        }
+    </style>
+</head>
+
+<body>
+    <div id= "header" >
+    <h3 > YMC, Pune </h3>
+    <h4 > Department of Computer Science </h4>
+        </div>
+<div id ="content"  >
+    <form name="log" action="insplacement.jsp" method="post">
+           Year:<input type="text" name="year" value="" size="20" Style ="margin-left: 165px"/><br>
+           No of Company Visited:<input type="text" name="company" value="" size="20" Style ="margin-left: 45px" /><br>
+           Number of Students Placed:<input type="text" name="num" value="" size="20" style="margin-left: 25px" /><br>
+           Percentage of Students Placed:<input type="text" name="percentage" value="" size="20" style = "margin-left: 9px"/><br>
+           Maximum Salary offered (p.a.):<input type="text" name="max" value="" size="20" style = "margin-left: 4px"/><br> 
+           Minimum Salary offered (p.a.):<input type="text" name="min" value="" size="20" style = "margin-left: 7px"/><br>
+           Average Salary offered (p.a.):<input type="text" name="avg" value="" size="20" style = "margin-left: 15px"/><br>
+           <input type="submit" value="Insert" name="logButton" />
+           <input type="reset" value="Clear" />
+
+        </form>
+        </div>
+</body>

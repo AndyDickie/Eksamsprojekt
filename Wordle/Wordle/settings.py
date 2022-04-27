@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'Wordle.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/andydickie/Documents/GitHub/Eksamsprojekt/Wordle/db.sqlite3',
+        'NAME': '/Users/andydickie/Documents/GitHub/Eksamsprojekt/Wordle/Wordle/db.sqlite3',
     }
 }
 
@@ -123,7 +123,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/home"
 LOGOUT_REDIRECT_URL = "/" 
 
 #Til at reset kode

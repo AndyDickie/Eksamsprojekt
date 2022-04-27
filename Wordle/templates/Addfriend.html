@@ -1,0 +1,51 @@
+<!--Her skal man kunne tilføje venner-->
+<!doctype html>
+{% extends 'base.html' %}
+{% block title %}Add Friend{% endblock %}
+{% block content %}
+
+    <div class="text-center">
+        <h1>Add friends<h1>
+    </div>
+    <div class="d-flex p-4 justify-content-center">
+        
+
+
+     <form action = "" method="post">
+         {%csrf_token%}
+         <label for="Friend name">Select username: </lable>
+        <!-- <input id="friend_name" type="text" name="name_field" value="Player name"> -->
+
+        <select name="name_field" id="friend_name" type="text">
+            <option value="">Select friend</option>
+            {% for user in users %}
+                <option value="{{user.username}}">{{user.username}}</option>
+            {% endfor %}
+          </select>
+
+        <button type="submit" class="btn btn-primary">Add Friend</button>
+     </form>
+
+    </div>
+
+    <div class="row align-items-start">
+        <div class="col-9">.</div>
+        <div class="col-3">
+        <table class="table table-hover">
+            <thead>
+                <th scope="col"> Friends </th>
+            </thead>
+            <tbody>
+                {% for friend in friends %}
+                    <tr>
+                        <td>{{friend.username}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <div>
+    </div>
+
+
+{% endblock %}
+        
