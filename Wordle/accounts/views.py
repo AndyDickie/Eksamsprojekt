@@ -82,8 +82,9 @@ def block_user(request):
         other_fl.remove_friend(user)
 
     user = request.user
-    users = User.objects.all()
     friends = FriendList.objects.get(user = request.user).friends.all()
+    users = User.objects.exclude(username__in = [request.user.username])
+    
     context = {
         'users': users,
         'friends': friends
