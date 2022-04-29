@@ -20,9 +20,9 @@
     <div class="d-flex p-4 justify-content-center">
      <form action = "" method="post">
          {%csrf_token%}
-         <label for="Friend name">Select username: </lable>
+         <label for="friend_name">Select username: </lable>
         <select class="selectpicker" data-live-search="true" name="name_field" id="friend_name" type="text">
-            <option value="">Select friend</option>
+            <option value="">Choose Username</option>
             {% for user in users %}
                 <option value="{{user.username}}">{{user.username}}</option>
             {% endfor %}

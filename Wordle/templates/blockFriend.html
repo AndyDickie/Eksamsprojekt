@@ -1,7 +1,7 @@
 <!--Her skal man kunne tilføje venner-->
 <!doctype html>
 {% extends 'base.html' %}
-{% block title %}Add Friend{% endblock %}
+{% block title %}Block Friend{% endblock %}
 
 {% block css %}
 <style>
@@ -15,6 +15,21 @@
 {% block content %}
     <div class="text-center">
         <h1>Block Friends<h1>
+    </div>
+
+    <div class="d-flex p-4 justify-content-center">
+        <form action = "" method="post">
+            {%csrf_token%}
+            <label for="block_username">Select username: </lable>
+           <select class="selectpicker" data-live-search="true" name="name_field" id="block_username" type="text">
+               <option value="">Select User</option>
+               {% for user in users %}
+                   <option value="{{user.username}}">{{user.username}}</option>
+               {% endfor %}
+             </select>
+   
+           <button type="submit" class="btn btn-primary">Block User</button>
+        </form>
     </div>
 
     <div class="row align-items-start table-responsive">
