@@ -4,12 +4,26 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-  <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
+  <p class="fs-1 text-center">Welcome To NeoWorlde?</p>
+  <div class="text-center">
+    <p>
+      <a href="#">Test</a>
+      <h1>TEST</h1>
+    </p>
+  </div>
+  <h1>Hi {{ user.username }}!</h1>
+  <div class="container m-0">
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
+    <p><a href="{% url 'accounts' %}">Manage Account</a></p>
+  </div>
+  
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a>
   <p><a href="{% url 'signup' %}">Create User</a><p>
 {% endif %}
+
+  
+
 {% endblock %}

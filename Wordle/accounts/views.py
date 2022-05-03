@@ -89,8 +89,8 @@ def add_friend(request):
         print("users", users)
        
     except Exception:
+        friends = []
         users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
-        friends = None
 
     context = {
         'users': users,
@@ -108,7 +108,7 @@ def block_user(request):
 
         fl = FriendList.objects.get(user = user)
         fl.block_user(blocked_user)
-        
+
         other_fl = FriendList.objects.get(user = blocked_user)
         other_fl.remove_friend(user)
 
