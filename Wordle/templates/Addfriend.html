@@ -19,15 +19,15 @@
 
     <div class="d-flex p-4 justify-content-center">
      <form action = "" method="post">
-         {%csrf_token%}
-         <label for="friend_name">Select username: </lable>
-        <select class="selectpicker" data-live-search="true" name="name_field" id="friend_name" type="text">
-            <option value="">Choose Username</option>
+        {%csrf_token%}
+        <input type="text" name="friend_name" list="friends" placeholder="Enter username...">
+        <datalist id="friends"> 
             {% for user in users %}
                 <option value="{{user.username}}">{{user.username}}</option>
             {% endfor %}
-          </select>
+        </datalist>
 
+        
         <button type="submit" class="btn btn-primary">Add Friend</button>
      </form>
     </div>
@@ -38,11 +38,13 @@
         <table class="table table-hover border">
             <thead>
                 <th scope="col"> Friends </th>
+                <th scope="col"></th>
             </thead>
             <tbody>
                 {% for friend in friends %}
                     <tr>
-                        <td>{{friend.username}}</td>
+                            <td>{{friend.username}}</td>
+                            <td><a href=" {% url 'remove_friend' friend_id=friend.username%}" class="float-end"><i class="bi bi-x-square"></i></a></td>
                     </tr>
                 {% endfor %}
             </tbody>

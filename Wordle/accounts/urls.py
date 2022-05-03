@@ -14,4 +14,5 @@ urlpatterns = [
     path('gametest/', TemplateView.as_view(template_name='game/index.html')),
     path("", TemplateView.as_view(template_name='accounts.html'), name='accounts'),
     path("test/", TemplateView.as_view(template_name="test.html"), name='test'),
+    path('remove_friend/<str:friend_id>', views.remove_friend, name='remove_friend'),
 ]

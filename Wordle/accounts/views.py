@@ -66,7 +66,8 @@ def login_user(request):
 @login_required 
 def add_friend(request):
     if request.method == 'POST':
-        username_ = request.POST.get('name_field')
+        username_ = request.POST.get('friend_name')
+        print(username_)
         friend_user = User.objects.get(username = username_)
         user = request.user
         
@@ -122,3 +123,13 @@ def block_user(request):
     }
 
     return render(request, "blockFriend.html", context)
+
+@login_required
+def remove_friend(request, friend_id):
+    fl = FriendList.objects.get(user = request.user)
+    friend_to_remove = User.objects.get(username = friend_id)
+    other_fl = FriendList.objects.get(user = friend_to_remove)
+    fl.remove_friend(friend_to_remove)
+    other_fl.remove_friend(request.user)
+    print(friend_id)
+    return redirect('add_friend')
