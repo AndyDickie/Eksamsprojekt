@@ -1,3 +1,33 @@
 h1 {
     text-align: center;
 }
+
+#spil-side {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .bogstav-kasse {
+    border: 2px solid gray;
+    border-radius: 10px;
+    margin: 2px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+  }
+  
+  .fyldt-kasse {
+    border: 2px solid black;
+  }
+  
+  .bogstav-række {
+    display: flex;
+  }
+
+  
