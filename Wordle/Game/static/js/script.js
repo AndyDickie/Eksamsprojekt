@@ -1,5 +1,4 @@
 import { ORD } from "./ord.js";
-
 const antalGæt = 6;
 let resterendeGæt = antalGæt;
 let nuværendeGæt = [];
@@ -9,13 +8,15 @@ console.log(rigtigGætString)
 
 function initSide() {
     let Side = document.getElementById("spil-side");
+    console.log('initSide');
     for (let i = 0; i < antalGæt; i++) {
-        let række = document.getElement("div")
-        række.classNavn = "bogstav-række"
+        console.log('initSide');
+        let række = document.createElement("div")
+        række.className = "bogstav-række"
 
-        for (let j = 0;j < 5; j++) {
-            let kasse = document.getElement("div")
-            kasse.classNavn = "bogstav-kasse"
+        for (let j = 0; j < 5; j++) {
+            let kasse = document.createElement("div")
+            kasse.className = "bogstav-kasse"
             række.appendChild(kasse)
         }
         Side.appendChild(række)
@@ -48,7 +49,7 @@ document.addEventListener("keyup", (e) => {
     }
 })
 
-function indsætBogstav (trykketKnap) {
+function insertLetter (trykketKnap) {
     if (næsteBogstav === 5) {
         return
     }
@@ -62,7 +63,7 @@ function indsætBogstav (trykketKnap) {
     næsteBogstav += 1
 }
 
-function sletBogstav () {
+function deleteLetter () {
 let række = document.getElementsByClassName("bogstav-række")[6-resterendeGæt]
 let kasse = række.children[næsteBogstav - 1]
 kasse.textContent= ""
@@ -71,21 +72,22 @@ nuværendeGæt.pop()
 næsteBogstav -= 1
 }
 
-function checkGæt () {
+function checkGuess () {
     let række = document.getElementsByClassName("bogstav-række")[6-resterendeGæt]
     let gætString = ''
     let rigtigGæt = Array.from(rigtigGætString)
 
     for (const val of nuværendeGæt){
-        gætstring += val
+        gætString += val
     }
 
-    if (gætString.length !=5){
+    if (gætString.length != 5){
         toastr.error("ikke nok bogstaver/not enough letters")
         return
     }
 
     if (!ORD.includes(gætString)){
+        console.log("ord findes ikke");
         toastr.error("ord ikke i listen")
         return 
     }
@@ -94,19 +96,26 @@ function checkGæt () {
         let bogstavFarve = ''
         let kasse = række.children[i]
         let bogstav = nuværendeGæt[i]
-        let bogstavPosition = rigtigGæt.indexof(nuværendeGæt[i])
+        let bogstavPosition = rigtigGæt.indexOf(nuværendeGæt[i])
+        console.log(nuværendeGæt[i], rigtigGæt[i])
         if (bogstavPosition === -1) {
             bogstavFarve = 'grey'
         } else {
-            if (nuværendeGæt[i]=rigtigGæt[i]) {
-            bogstavFarve = 'green'
+            if (nuværendeGæt[i] == rigtigGæt[i]) {
+                bogstavFarve = 'green'
             } else {
-            bogstavFarve = 'yellow'
+                bogstavFarve = 'yellow'
             }
-        rigtigGæt[bogstavPosition]='#'
+            rigtigGæt[i]='#'
         }
+        let delay = 0 * i
+        setTimeout(()=> {
+            //shade box
+            kasse.style.backgroundColor = bogstavFarve
+            //shadeKeyBoard(letter, letterColor)
+        }, delay)
     }
-    if (gætString=rigtigGætString){
+    if (gætString === rigtigGætString){
         toastr.success("Du gættede det/You guessed it")
         resterendeGæt=0
         return
@@ -114,6 +123,7 @@ function checkGæt () {
         resterendeGæt -= 1;
         nuværendeGæt = [];
         næsteBogstav = 0;
+        toastr.error("forkert gæt");
 
         if (resterendeGæt === 0){
             toastr.error("du tabte/you lost")
