@@ -10,4 +10,5 @@ urlpatterns = [
     #path('test/', TemplateView.as_view(template_name='Addfriend.html'),name='addFriendTest'),
     path('test/', views.add_friend, name='add_friend'),
     path('block_user', views.block_user, name='block_user'),
+    path('gametest/', TemplateView.as_view(template_name='game/index.html'), name='gametest')
 ]
