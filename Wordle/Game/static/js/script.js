@@ -3,7 +3,8 @@ const antalGæt = 6;
 let resterendeGæt = antalGæt;
 let nuværendeGæt = [];
 let næsteBogstav = 0;
-let rigtigGætString = ORD[Math.floor(Math.random() * ORD.length)]
+//let rigtigGætString = ORD[Math.floor(Math.random() * ORD.length)] //ord skal hentes fra context
+let rigtigGætString = document.getElementById("word").innerText;
 console.log(rigtigGætString)
 
 function initSide() {

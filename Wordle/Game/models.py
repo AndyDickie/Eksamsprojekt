@@ -10,17 +10,45 @@ class GameLobby(models.Model):
     og hvilke to ord de to spillere skal gætte.
     Resultatet af spillet skal også gemmes
     """
-    player_1 = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='player_1')
-    player_2 = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='player_2')
-    word_1 = models.CharField(max_length=6, name='word_1')
-    word_2 = models.CharField(max_length=6, name='word_2')
+    Player_1 = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='player_1')
+    Player_2 = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='player_2')
+
+    Word_1 = models.CharField(max_length=5, name='word_1')
+    Word_2 = models.CharField(max_length=5, name='word_2')
+
+    GameStatus = models.BooleanField(default=True)
+
+    Player_1_Status = models.BooleanField(default=False)
+    Player_2_Status = models.BooleanField(default=False)
+
+    #moves to win?
     
+    #To ord bliver udvalgt fra listen af genkendelige ord
     with open("./words.json", 'r') as f:
         WordList = json.loads(f.read())
     word_1 = WordList['words'][random.randrange(0, len(WordList['words']))]
     word_2 = WordList['words'][random.randrange(0, len(WordList['words']))]
-    
 
+    def get_word(self, account):
+        if account in self.Player_1.all():
+            return self.Word_1
+        if account in self.Player_2.all():
+            return self.Word_2
+        else:
+            return None
+    
+    def change_player_status(self, account):
+        if account in self.Player_1.all():
+            self.Player_1_Status = True
+            self.save()
+        if account in self.Player_2.all():
+            self.Player_2_Status = True
+            self.save()
+        else:
+            return
+    
+    def end_game(self):
+        pass
 
 class GameInvite(models.Model):
     """
@@ -29,11 +57,17 @@ class GameInvite(models.Model):
     Accepteres invitationen, bliver invitationen inaktiv, og et spil laves.
     """
 
-    sender = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sender')
-    receiver = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='receiver')
-    status = models.BooleanField(default=True)
+    #sender = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sender')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='sender', on_delete=models.CASCADE)
+    #receiver = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='receiver')
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='receiver', on_delete=models.CASCADE)
 
     def accept_invite(self):
-        self.status = False
-        self.save()
         #Set status to false, and create game_lobby
+        print("ACCEPTED")
+        self.delete()
+
+        
+    def decline_invite(self):
+        print("DELETED")
+        self.delete()

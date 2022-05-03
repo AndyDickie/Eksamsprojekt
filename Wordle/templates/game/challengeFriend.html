@@ -13,13 +13,13 @@
                 <th scope="col"></th>
             </thead>
             <tbody>
-                {% for friend in friends %}
+                {% for challenge in pending_challenges %}
                     <tr>
-                            <td>{{friend.username}}</td>
-                            <td>
-                                <a href="#" class="float-end"><i class="bi bi-x-square"></i></a>
-                                <a href="#" class="float-end me-2"><i class="bi bi-check-circle"></i></a>
-                            </td>
+                        <td>{{challenge.username}}</td>
+                        <td>
+                            <a href=" {% url 'decline_invite' friend_id=challenge.username %}" class="float-end"><i class="bi bi-x-circle-fill text-danger"></i></a>
+                            <a href=" {% url 'accept_invite' friend_id=challenge.username %}" class="float-end me-2"><i class="bi bi-check-circle-fill text-success"></i></a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -32,11 +32,12 @@
         <div class="d-flex justify-content-center">
             <form action = "" method="post">
                {%csrf_token%}
-               <input type="text" name="friend_name" list="friends" placeholder="Enter username...">
-               <datalist id="friends"> 
-                   {% for user in users %}
-                       <option value="{{user.username}}">{{user.username}}</option>
+               <input type="text" name="friend_to_challenge" list="friend_challenge" placeholder="Enter username...">
+               <datalist id="friend_challenge"> 
+                   {% for friend in friends %}
+                       <option value="{{friend.username}}">{{friend.username}}</option>
                    {% endfor %}
+                   <option>test</option>
                </datalist>
                <button type="submit" class="btn btn-primary p-2">Send Challenge</button>
             </form>

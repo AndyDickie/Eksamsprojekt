@@ -16,39 +16,41 @@
     <div class="text-center">
         <h1>Add friends<h1>
     </div>
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">TIS</div>
 
     <div class="d-flex p-4 justify-content-center">
-     <form action = "" method="post">
+     <form class="w-25" action = "" method="post">
         {%csrf_token%}
-        <input type="text" name="friend_name" list="friends" placeholder="Enter username...">
+        <div class="row">
+            <input class="form-control" type="text" name="friend_name" list="friends" placeholder="Enter username...">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus-fill"> Add Friend</i></button>
+        </div>
+        
         <datalist id="friends"> 
             {% for user in users %}
                 <option value="{{user.username}}">{{user.username}}</option>
             {% endfor %}
         </datalist>
-
         
-        <button type="submit" class="btn btn-primary">Add Friend</button>
      </form>
     </div>
-
-    <div class="row align-items-start table-responsive">
-        <div class="col-5">.</div>
-        <div class="col-2">
-        <table class="table table-hover border">
-            <thead>
-                <th scope="col"> Friends </th>
-                <th scope="col"></th>
-            </thead>
-            <tbody>
-                {% for friend in friends %}
-                    <tr>
-                            <td>{{friend.username}}</td>
-                            <td><a href=" {% url 'remove_friend' friend_id=friend.username%}" class="float-end"><i class="bi bi-x-square"></i></a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="d-flex p-4 justify-content-center">
+        <div class="row align-items-start table-responsive w-25">
+            <div class="col">
+            <table class="table table-hover border">
+                <thead>
+                    <th scope="col"> Friends </th>
+                </thead>
+                <tbody>
+                    {% for friend in friends %}
+                        <tr>
+                                <td>{{friend.username}}</td>
+                                <td><a href=" {% url 'remove_friend' friend_id=friend.username%}" class="float-end"><i class="bi bi-person-x text-danger"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     </div>
 
