@@ -29,20 +29,38 @@ def ChallengeFriend(request):
         print("friends", friends)
         users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
         print("users", users)
+        
+
+    except Exception:
+        friends = []
+        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
+    
+    try:
         challenges = GameInvite.objects.filter(receiver = request.user)
         userName_challenge = []
         for challenge in challenges:
             userName_challenge.append(challenge.sender)
         print("ssss", userName_challenge)
 
-    except Exception:
-        friends = []
-        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
-    
+    except Exception:    
+        userName_challenge = []
+
+    try:
+        sent_challenges_objects = GameInvite.objects.filter(sender = request.user)
+        sent_challenges = []
+        for challenge in sent_challenges_objects:
+            sent_challenges.append(challenge.receiver)
+        print("ssss", sent_challenges)
+        
+    except Exception:    
+        sent_challenges = []
+
+
     context = {
         'users': users,
         'friends': friends,
-        'pending_challenges': userName_challenge
+        'pending_challenges': userName_challenge,
+        'sent_challenges': sent_challenges,
     }
     return render(request, 'game/challengeFriend.html', context)
 

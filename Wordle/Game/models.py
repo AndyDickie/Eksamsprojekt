@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 import random, json
 
+def random_word():
+    with open("./words.json", 'r') as f:
+        WordList = json.loads(f.read())
+    return WordList['words'][random.randrange(0, len(WordList['words']))]
+
 # Create your models here.
 class GameLobby(models.Model):
     """
@@ -13,8 +18,8 @@ class GameLobby(models.Model):
     Player_1 = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='player_1')
     Player_2 = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='player_2')
 
-    Word_1 = models.CharField(max_length=5, name='word_1')
-    Word_2 = models.CharField(max_length=5, name='word_2')
+    Word_1 = models.CharField(max_length=5, name='word_1', default=random_word)
+    Word_2 = models.CharField(max_length=5, name='word_2', default=random_word)
 
     GameStatus = models.BooleanField(default=True)
 
@@ -23,11 +28,6 @@ class GameLobby(models.Model):
 
     #moves to win?
     
-    #To ord bliver udvalgt fra listen af genkendelige ord
-    with open("./words.json", 'r') as f:
-        WordList = json.loads(f.read())
-    word_1 = WordList['words'][random.randrange(0, len(WordList['words']))]
-    word_2 = WordList['words'][random.randrange(0, len(WordList['words']))]
 
     def get_word(self, account):
         if account in self.Player_1.all():

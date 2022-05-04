@@ -4,7 +4,7 @@
 <div class="text-center">
     <h1>Pending Challenges<h1>
 </div>
-<div class="row align-items-start table-responsive">
+<div class="row align-items-start table-responsive m-3">
         <div class="col-5">.</div>
         <div class="col-2">
         <table class="table table-hover border">
@@ -26,21 +26,46 @@
         </table>
     </div>
 </div>
-        <div class="text-center">
-            <h1>Challenge Friends<h1>
-        </div>
-        <div class="d-flex justify-content-center">
-            <form action = "" method="post">
-               {%csrf_token%}
-               <input type="text" name="friend_to_challenge" list="friend_challenge" placeholder="Enter username...">
-               <datalist id="friend_challenge"> 
-                   {% for friend in friends %}
-                       <option value="{{friend.username}}">{{friend.username}}</option>
-                   {% endfor %}
-                   <option>test</option>
-               </datalist>
-               <button type="submit" class="btn btn-primary p-2">Send Challenge</button>
-            </form>
-        </div>
+
+<div class="text-center">
+    <h1>Challenge Friends<h1>
+</div>
+<div class="d-flex justify-content-center m-3">
+    <form action = "" method="post">
+        {%csrf_token%}
+        <input type="text" name="friend_to_challenge" list="friend_challenge" placeholder="Enter username...">
+        <datalist id="friend_challenge"> 
+            {% for friend in friends %}
+                <option value="{{friend.username}}">{{friend.username}}</option>
+            {% endfor %}
+        </datalist>
+        <button type="submit" class="btn btn-primary p-2">Send Challenge</button>
+    </form>
+</div>
+
+<div class="text-center">
+    <h1>Sent Challenges<h1>
+</div>
+<div class="row align-items-start table-responsive m-3">
+        <div class="col-5">.</div>
+        <div class="col-2">
+        <table class="table table-hover border">
+            <thead>
+                <th scope="col"> Invites </th>
+                <th scope="col"></th>
+            </thead>
+            <tbody>
+                {% for challenge in sent_challenges %}
+                    <tr>
+                        <td>{{challenge.username}}</td>
+                        <td>
+                            <i class="bi bi-hourglass-split float-end"></i>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
     
 {% endblock %}
