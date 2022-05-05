@@ -1,10 +1,6 @@
-from django.urls import path, include
-
-from . import views
-
-
+from django.urls import path
 from django.views.generic.base import TemplateView
-
+from . import views
 
 urlpatterns = [
     path('gametest/', views.draw_game, name='gametest'),

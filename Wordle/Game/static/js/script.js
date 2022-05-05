@@ -117,6 +117,7 @@ function checkGuess () {
         }, delay)
     }
     if (gætString === rigtigGætString){
+        // POST METHOD HERE
         toastr.success("Du gættede det/You guessed it")
         resterendeGæt=0
         return
@@ -127,6 +128,7 @@ function checkGuess () {
         toastr.error("forkert gæt");
 
         if (resterendeGæt === 0){
+            // POST METHOD HERE
             toastr.error("du tabte/you lost")
             toastr.info(`Rigtige ord/correct word: "${rigtigGætString}"`)
         }

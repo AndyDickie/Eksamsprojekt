@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def signup(request):
+    "signup"
     form = Signup()
     context = {
         'form': form,
@@ -49,6 +50,7 @@ def signup(request):
 
 
 def login_user(request):
+    "login_user"
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -65,6 +67,7 @@ def login_user(request):
 
 @login_required 
 def add_friend(request):
+    "add_friend"
     if request.method == 'POST':
         username_ = request.POST.get('friend_name')
         print(username_)
@@ -102,6 +105,7 @@ def add_friend(request):
 
 @login_required
 def block_user(request):
+    "block_user"
     if request.method == 'POST':
         username_ = request.POST.get('name_field')
         blocked_user = User.objects.get(username = username_)
@@ -126,6 +130,7 @@ def block_user(request):
 
 @login_required
 def remove_friend(request, friend_id):
+    "remove_friend"
     fl = FriendList.objects.get(user = request.user)
     friend_to_remove = User.objects.get(username = friend_id)
     other_fl = FriendList.objects.get(user = friend_to_remove)

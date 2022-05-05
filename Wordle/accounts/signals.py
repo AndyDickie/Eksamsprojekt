@@ -5,6 +5,7 @@ from .models import FriendList
 
 @receiver(post_save, sender=User)
 def create_FriendList(sender, instance, created, **kwargs):
+    "creates friendlist to the user that has been created"
     if created:
         FriendList.objects.create(user=instance).save()
   
