@@ -1,11 +1,27 @@
 import { ORD } from "./ord.js";
 const antalGæt = 6;
 let resterendeGæt = antalGæt;
+let antalGættede = 0;
 let nuværendeGæt = [];
 let næsteBogstav = 0;
 //let rigtigGætString = ORD[Math.floor(Math.random() * ORD.length)] //ord skal hentes fra context
 let rigtigGætString = document.getElementById("word").innerText;
 console.log(rigtigGætString)
+
+function post_results(result) {
+    var result_input = document.createElement("INPUT");
+    result_input.setAttribute("id", "result");
+    result_input.setAttribute("name", "result")
+    result_input.setAttribute("type", "text");
+    result_input.setAttribute("value", result);
+    result_input.type = "hidden";
+
+    document.getElementById("result_form").appendChild(result_input)
+
+    console.log(result)
+    result_form.method = "POST";
+    result_form.submit();
+}
 
 function initSide() {
     let Side = document.getElementById("spil-side");
@@ -38,6 +54,7 @@ document.addEventListener("keyup", (e) => {
     }
 
     if (trykketKnap === "Enter") {
+        antalGættede++
         checkGuess()
         return
     }
@@ -109,7 +126,7 @@ function checkGuess () {
             }
             rigtigGæt[i]='#'
         }
-        let delay = 0 * i
+        let delay = 250 * i
         setTimeout(()=> {
             //shade box
             kasse.style.backgroundColor = bogstavFarve
@@ -118,8 +135,9 @@ function checkGuess () {
     }
     if (gætString === rigtigGætString){
         // POST METHOD HERE
-        toastr.success("Du gættede det/You guessed it")
-        resterendeGæt=0
+        toastr.success("Du gættede det/You guessed it");
+        setTimeout(function(){post_results(antalGættede);}, 7000);
+        resterendeGæt=0;
         return
     } else {
         resterendeGæt -= 1;
@@ -129,8 +147,9 @@ function checkGuess () {
 
         if (resterendeGæt === 0){
             // POST METHOD HERE
-            toastr.error("du tabte/you lost")
+            toastr.error("du tabte/you lost");
             toastr.info(`Rigtige ord/correct word: "${rigtigGætString}"`)
+            setTimeout(function(){post_results(antalGættede);}, 7000);
         }
     }
 }

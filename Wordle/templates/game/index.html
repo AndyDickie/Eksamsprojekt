@@ -25,6 +25,10 @@
     crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{% static '/js/script.js' %}" type="module"></script>
+
+    <form hidden id="result_form" method="POST">
+        {% csrf_token %}
+    </form>
 {% endblock %}
 
 

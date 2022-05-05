@@ -50,49 +50,61 @@ class GameLobby(models.Model):
     Player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='player_1', on_delete=models.CASCADE, blank=True)
     Player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='player_2', on_delete=models.CASCADE, blank=True)
 
-    #foreignKey to game_invite
-
     game_invite = models.ForeignKey(GameInvite, name='game_invite', on_delete=models.CASCADE, null=True, blank=True)
 
     Word_1 = models.CharField(max_length=5, name='word_1', default=random_word)
     Word_2 = models.CharField(max_length=5, name='word_2', default=random_word)
 
-    GameFinished = models.BooleanField(default=False)
+    GameFinished = models.BooleanField(default=False, name="GameFinished")
 
     Player_1_Finished = models.BooleanField(default=False) #True means finished
     Player_2_Finished = models.BooleanField(default=False)
 
-    Player_1_Moves = models.IntegerField(blank=True, name='Player_1_Move', default=6)
-    Player_2_Moves = models.IntegerField(blank=True, name='Player_2_Move', default=6)
+    Player_1_Moves = models.IntegerField(blank=True, name='Player_1_Moves', default=6)
+    Player_2_Moves = models.IntegerField(blank=True, name='Player_2_Moves', default=6)
 
     def __str__(self):
         return (f"Game Lobby: {self.game_invite}")
 
     def get_word(self, account):
         "Returns the word belonging to the account"
-        if account in self.Player_1.all():
-            return self.Word_1
-        if account in self.Player_2.all():
-            return self.Word_2
-        else:
-            return None
+        if account == self.Player_1:
+            return str(self.word_1)
+
+        if account == self.Player_2:
+            return str(self.word_2)
     
     def change_player_status(self, account):
         "changes player_status for account to finished"
-        if account in self.Player_1.all():
+        if account == self.Player_1:
             self.Player_1_Finished = True
             self.save()
-        if account in self.Player_2.all():
+        if account == self.Player_2:
             self.Player_2_Finished = True
             self.save()
         else:
             return
     
+    def update_player_result(self, account, result):
+        if account == self.Player_1:
+            self.Player_1_Moves = result
+            self.save()
+        if account == self.Player_2:
+            self.Player_2_Moves = result
+            self.save()
+
+    def playing_against(self, account):
+        if account == self.Player_1:
+            return f"Game against {self.Player_2.username}"
+        if account == self.Player_2:
+            return f"Game against {self.Player_1.username}"
+    
     def end_game(self):
         "set the game status to finished"
-        if self.Player_1_Finished.all() == True and self.Player_2_Finished.all() == True:
+        print("player 1 og 2 status:", self.Player_1_Finished, self.Player_2_Finished)
+        if self.Player_1_Finished == True and self.Player_2_Finished == True:
             self.GameFinished = True
-        pass
+            self.save()
 
     def get_winner(self):
         "returns the winner user, or draw"
@@ -100,7 +112,7 @@ class GameLobby(models.Model):
             if self.Player_1_Moves == self.Player_2_Moves:
                 return "draw"
             if self.Player_1_Moves > self.Player_2_Moves:
-                return self.Player_1.all()
+                return self.Player_1
             if self.Player_2_Moves > self.Player_1_Moves:
-                return self.Player_2.all()
+                return self.Player_2
 

@@ -1,3 +1,4 @@
+from itertools import chain
 from accounts.models import FriendList
 from Game.models import GameLobby, GameInvite
 from django.contrib.auth.models import User
@@ -7,23 +8,43 @@ import json
 
 # Create your views here.
 
-def draw_game(request):
+def draw_game(request, game_id):
     """
     Renders the game page, and sends the word to guess as context.
     Listents for post method from js, to close the game and awars points
     """
+    game = GameLobby.objects.get(pk=game_id)
+
     #Returner spillerens ord fra game_lobby objektet
-    context = {'word': "glass"}
+    if request.method == 'POST':
+        result = request.POST.get('result')
+        game.change_player_status(request.user)
+        
+        game.update_player_result(request.user, result)
+        #Try to close the game
+        game.end_game()
+        print("REUSLT", result)
+        return redirect('challenges')
+    
+    word = game.get_word(request.user)
+
+    context = {'word': word}
     return render(request, template_name="game/index.html", context=context)
 
 def ChallengeFriend(request):
     "Draws the challenge friend page"
+    error = False
+    challenges = []
+
     if request.method == 'POST':
         username = request.POST.get('friend_to_challenge')
-        GameInvite.objects.create(sender=request.user, receiver=User.objects.get(username=username))
+        try:
+            if GameInvite.objects.get(sender=request.user, receiver=User.objects.get(username=username), active=True):
+                error = True  
 
-    context = []
-    challenges = []
+        except Exception as e:
+            if (str(e) == "GameInvite matching query does not exist."):
+                GameInvite.objects.create(sender=request.user, receiver=User.objects.get(username=username))
 
     try:
         fl = FriendList.objects.get(user = request.user)
@@ -52,7 +73,7 @@ def ChallengeFriend(request):
         userName_challenge = []
 
     try:
-        sent_challenges_objects = GameInvite.objects.filter(sender = request.user)
+        sent_challenges_objects = GameInvite.objects.filter(sender = request.user, active=True)
         sent_challenges = []
         for challenge in sent_challenges_objects:
             sent_challenges.append(challenge.receiver)
@@ -61,23 +82,39 @@ def ChallengeFriend(request):
     except Exception:    
         sent_challenges = []
 
-
+    
+    #CONTEXT HANDLING FOR ACTIVE GAMES
+    active_games = list(chain(GameLobby.objects.filter(Player_1=request.user, Player_1_Finished = False, GameFinished = False), GameLobby.objects.filter(Player_2=request.user, Player_2_Finished = False, GameFinished = False)))
+    print(active_games)
+    game_against = []
+    if active_games:
+        for game in active_games:
+            print("game", game)
+            game_against.append(game.playing_against(request.user))
+    try:
+        pass
+    except Exception:
+        active_games = []
     context = {
-        'users': users,
-        'friends': friends,
-        'pending_challenges': userName_challenge,
-        'sent_challenges': sent_challenges,
-    }
+            'users': users,
+            'friends': friends,
+            'pending_challenges': userName_challenge,
+            'sent_challenges': sent_challenges,
+            'error_bool': error,
+            'active_games': active_games,
+            'game_against': game_against
+        }
+
     return render(request, 'game/challengeFriend.html', context)
 
 def accept_challenge(request, friend_id):
     "Accept a challenge, and create a game_lobby object"
-    invite = GameInvite.objects.get(sender = User.objects.get(username=friend_id), receiver=request.user)
+    invite = GameInvite.objects.get(sender = User.objects.get(username=friend_id), receiver=request.user, active=True)
     invite.accept_invite()
-    return redirect('test1234')
+    return redirect('challenges')
 
 def decline_challenge(request, friend_id):
     "Decline a challenge and delete the model object of the friend request"
     invite = GameInvite.objects.get(sender = User.objects.get(username=friend_id), receiver=request.user)
     invite.decline_invite()
-    return redirect('test1234')
+    return redirect('challenges')
