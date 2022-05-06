@@ -5,13 +5,14 @@
 {% block content %}
 {% if user.is_authenticated %}
 <p class="fs-1 text-center">Welcome To NeoWorlde?</p>
-  <div class="text-center">
+  <div class="text-center mb-4">
   <h1>Hi {{ user.username }}!</h1>
 </div>
-  <div class="container m-0">
-    <p><a href="{% url 'logout' %}" class="btn btn-secondary btn-sm">Log Out</a></p>
-    <p><a href="{% url 'password_reset' %}" class="btn btn-secondary btn-sm">Reset Password</a></p>
-    <p><a href="{% url 'accounts' %}" class="btn btn-secondary btn-sm">Manage Account</a></p>
+  <div class="container text-center">
+      <!--<a href="{% url 'logout' %}" class="btn btn-secondary btn-sm">Log Out</a>-->
+      <a href="{% url 'challenges' %}" class="btn btn-secondary btn-sm mx-3">Manage Games</a>
+      <a href="{% url 'accounts' %}" class="btn btn-secondary btn-sm">Manage Friends</a>
+    
   </div>
 
 
@@ -24,7 +25,7 @@
     <a href="{% url 'login' %}" class="btn btn-primary float-end m-3">Log In</a>
   </div>
   
-  <div class="col"><p><a href="{% url 'signup' %}" class="btn btn-primary float-start m-3">Create User</a><p></p></div>
+  <div class="col"><p><a href="{% url 'signup' %}" class="btn btn-secondary float-start m-3">Create User</a><p></p></div>
   
   </div>
 {% endif %}

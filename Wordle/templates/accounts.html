@@ -3,11 +3,11 @@
 {% block title%}Account{% endblock %}
 
 {% block content %}
-<p class="fs-1 text-center">Account</p>
-<div class="container m-0">
-    <p><a href="{% url 'add_friend' %}" class="btn btn-secondary btn-sm">Add Friends</a></p>
-    <p><a href="{% url 'block_user' %}" class="btn btn-secondary btn-sm">Block Users</a></p>
-    <p><a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Home</a></p>
+<p class="fs-1 text-center">Manage Friends</p>
+<div class="container text-center">
+    <a href="{% url 'add_friend' %}" class="btn btn-secondary btn-sm">Add Friends</a>
+    <a href="{% url 'block_user' %}" class="btn btn-secondary btn-sm mx-3">Block Users</a>
+    <!--<a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Home</a>-->
 
 </div>
 {% endblock %} 
