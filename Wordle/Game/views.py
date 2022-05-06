@@ -1,12 +1,18 @@
 from itertools import chain
 from accounts.models import FriendList
-from Game.models import GameLobby, GameInvite
+from Game.models import GameLobby, GameInvite, random_word
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 import json
 
 # Create your views here.
+def draw_game_singleplayer(request):
+    if request.method == 'POST':
+        return redirect('challenges')
+    word = random_word()
+    context = {'word': word}
+    return render(request, template_name="game/index.html", context=context)
 
 def draw_game(request, game_id):
     """

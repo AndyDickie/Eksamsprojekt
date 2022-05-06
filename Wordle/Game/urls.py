@@ -7,4 +7,5 @@ urlpatterns = [
     path('challenge/', views.ChallengeFriend, name='challenges'),
     path('accept_invite/<str:friend_id>', views.accept_challenge, name='accept_invite'),
     path('decline_invite/<str:friend_id>', views.decline_challenge, name='decline_invite'),
+    path('practice_mode/', views.draw_game_singleplayer, name='singleplayer'),
 ]
