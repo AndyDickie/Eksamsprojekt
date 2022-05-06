@@ -8,6 +8,7 @@ let næsteBogstav = 0;
 let rigtigGætString = document.getElementById("word").innerText;
 console.log(rigtigGætString)
 
+
 function post_results(result) {
     var result_input = document.createElement("INPUT");
     result_input.setAttribute("id", "result");
@@ -121,10 +122,29 @@ function checkGuess () {
         } else {
             if (nuværendeGæt[i] == rigtigGæt[i]) {
                 bogstavFarve = 'green'
+                rigtigGæt[i]='#'
             } else {
                 bogstavFarve = 'yellow'
+                if (nuværendeGæt.indexOf(nuværendeGæt[i]) != nuværendeGæt.lastIndexOf(nuværendeGæt[i])) { //Does the guess letter contain more than one instance of letter at index i?
+                    if (bogstavPosition != rigtigGæt.lastIndexOf(nuværendeGæt[i])) { //Does the correct answer contain more than one instance of letter at index i?
+                        //safe to color yellow
+                        bogstavFarve = 'yellow' 
+                    } else {
+                        //The guess contains duplicate letter while correct is one?
+                        if (nuværendeGæt.lastIndexOf(nuværendeGæt[i]) == bogstavPosition) { //The current letter at guess is wrong, so color it grey
+                            bogstavFarve = 'grey'
+                        } else { //color the first instance yellow, both guesses are wrong
+                            bogstavFarve = 'yellow'
+                            rigtigGæt[rigtigGæt.indexOf(nuværendeGæt[i])] = '#'
+                        }
+
+                    }
+                    
+                }
+                
+                
             }
-            rigtigGæt[i]='#'
+            rigtigGæt[i] = '#'
         }
         let delay = 250 * i
         setTimeout(()=> {
