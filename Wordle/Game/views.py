@@ -52,42 +52,24 @@ def ChallengeFriend(request):
             if (str(e) == "GameInvite matching query does not exist."):
                 GameInvite.objects.create(sender=request.user, receiver=User.objects.get(username=username))
 
-    try:
-        fl = FriendList.objects.get(user = request.user)
-        friends = fl.friends.all()
-        print("friends", friends)
-        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
-        print("users", users)
-        
+    #Returns all friends of the user for context
+    fl = FriendList.objects.get(user = request.user)
+    friends = fl.friends.all()
+    #users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
 
-    except Exception:
-        friends = []
-        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
     
-    try:
-        challenges = GameInvite.objects.filter(receiver = request.user)
-        userName_challenge = []
-        print(challenges)
-        for challenge in challenges:
-            print("llll")
-            print("challenge: ", challenge.active)
-            if challenge.active == True:
-                userName_challenge.append(challenge.sender)
-        print("ssss", userName_challenge)
+    #Returns active game invites to the user
+    challenges = GameInvite.objects.filter(receiver = request.user)
+    userName_challenge = []
+    for challenge in challenges:
+        if challenge.active is True:
+            userName_challenge.append(challenge.sender)
 
-    except Exception:    
-        userName_challenge = []
-
-    try:
-        sent_challenges_objects = GameInvite.objects.filter(sender = request.user, active=True)
-        sent_challenges = []
-        for challenge in sent_challenges_objects:
-            sent_challenges.append(challenge.receiver)
-        print("ssss", sent_challenges)
-        
-    except Exception:    
-        sent_challenges = []
-
+    #Returns sent challenges for context
+    sent_challenges_objects = GameInvite.objects.filter(sender = request.user, active=True)
+    sent_challenges = []
+    for challenge in sent_challenges_objects:
+        sent_challenges.append(challenge.receiver)
     
     #CONTEXT HANDLING FOR ACTIVE GAMES
     active_games = list(chain(GameLobby.objects.filter(Player_1=request.user, Player_1_Finished = False, GameFinished = False), GameLobby.objects.filter(Player_2=request.user, Player_2_Finished = False, GameFinished = False)))
@@ -97,12 +79,8 @@ def ChallengeFriend(request):
         for game in active_games:
             print("game", game)
             game_against.append(game.playing_against(request.user))
-    try:
-        pass
-    except Exception:
-        active_games = []
+
     context = {
-            'users': users,
             'friends': friends,
             'pending_challenges': userName_challenge,
             'sent_challenges': sent_challenges,
@@ -111,7 +89,7 @@ def ChallengeFriend(request):
             'game_against': game_against
         }
 
-    return render(request, 'game/challengeFriend.html', context)
+    return render(request, 'game/GameMenu.html', context)
 
 def accept_challenge(request, friend_id):
     "Accept a challenge, and create a game_lobby object"

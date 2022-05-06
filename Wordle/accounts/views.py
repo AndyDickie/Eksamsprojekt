@@ -85,17 +85,10 @@ def add_friend(request):
         if user in other_fl.blocked_users.all():
             raise ValueError("The user has blocked you")
     
-    try:
-        fl = FriendList.objects.get(user = request.user)
-        friends = fl.friends.all()
-        print("friends", friends)
-        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
-        print("users", users)
+    fl = FriendList.objects.get(user = request.user)
+    friends = fl.friends.all()
+    users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
        
-    except Exception:
-        friends = []
-        users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
-
     context = {
         'users': users,
         'friends': friends
@@ -131,9 +124,12 @@ def block_user(request):
 @login_required
 def remove_friend(request, friend_id):
     "remove_friend"
+     
     fl = FriendList.objects.get(user = request.user)
-    friend_to_remove = User.objects.get(username = friend_id)
     other_fl = FriendList.objects.get(user = friend_to_remove)
+
+    friend_to_remove = User.objects.get(username = friend_id)
+    
     fl.remove_friend(friend_to_remove)
     other_fl.remove_friend(request.user)
     print(friend_id)
