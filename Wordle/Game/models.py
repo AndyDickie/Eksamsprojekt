@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 import random, json
+from accounts.models import Profile
 
 def random_word():
     "Returns a random word from the json file"
@@ -32,7 +33,7 @@ class GameInvite(models.Model):
 
         
     def decline_invite(self):
-        "declines invite and deletes instanece of invite"
+        "declines invite and deletes instance of invite"
         print("DELETED")
         self.delete()
 
@@ -99,20 +100,39 @@ class GameLobby(models.Model):
         if account == self.Player_2:
             return f"Game against {self.Player_1.username}"
     
+    def get_winner(self):
+        "returns the winner user, or draw"
+        print(self.Player_1_Moves, self.Player_2_Moves)
+        print(type(self.Player_1_Moves), type(self.Player_2_Moves))
+        if self.GameFinished == True:
+            if self.Player_1_Moves == self.Player_2_Moves:
+                return "draw"
+            if self.Player_1_Moves < self.Player_2_Moves:
+                return self.Player_1
+            if self.Player_2_Moves < self.Player_1_Moves:
+                return self.Player_2
+
+    def add_points(self, account):
+        user_profile = Profile.objects.get(user=account)
+        result = self.get_winner()
+        if result == "draw":
+            user_profile.add_draw()
+
+        elif result == account:
+            user_profile.add_win()
+        
+        else:
+            user_profile.add_loss()
+        
+
+
     def end_game(self):
         "set the game status to finished"
         print("player 1 og 2 status:", self.Player_1_Finished, self.Player_2_Finished)
         if self.Player_1_Finished == True and self.Player_2_Finished == True:
             self.GameFinished = True
+            self.add_points(account=self.Player_1)
+            self.add_points(account=self.Player_2)
             self.save()
 
-    def get_winner(self):
-        "returns the winner user, or draw"
-        if self.GameFinished == True:
-            if self.Player_1_Moves == self.Player_2_Moves:
-                return "draw"
-            if self.Player_1_Moves > self.Player_2_Moves:
-                return self.Player_1
-            if self.Player_2_Moves > self.Player_1_Moves:
-                return self.Player_2
-
+    

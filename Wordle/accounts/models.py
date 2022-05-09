@@ -39,4 +39,24 @@ class FriendList(models.Model):
     def __str__(self):
         return(self.user.username)
 
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile_user')
+    wins = models.IntegerField(default=0, name="wins")
+    draws = models.IntegerField(default=0, name="draws")
+    losses = models.IntegerField(default=0, name="losses")
+
+    def add_win(self):
+        self.wins += 1
+        self.save()
+    
+    def add_draw(self):
+        self.draws += 1
+        self.save()
+    
+    def add_loss(self):
+        self.losses += 1
+        self.save()
+
+    def __str__(self):
+        return(self.user.username)
 

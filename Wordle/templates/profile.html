@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{user.username}}</h1>
+{% for win, draw, los in WDL %}
+    <h1>WINS: {{win}}, DRAW: {{draw}}, LOSS: {{los}}</h1>
+{% endfor %}
+{% for game in games %}
+    <h1>{{game}}</h1>
+{% endfor %}
+{% for opp, res in game_status %}
+    <h1>{{opp}}  {{res}}</h1>
+{% endfor %}
+{% endblock %}

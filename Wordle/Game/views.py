@@ -2,7 +2,6 @@ from itertools import chain
 from accounts.models import FriendList
 from Game.models import GameLobby, GameInvite, random_word
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 import json
 
@@ -26,7 +25,7 @@ def draw_game(request, game_id):
         result = request.POST.get('result')
         game.change_player_status(request.user)
         
-        game.update_player_result(request.user, result)
+        game.update_player_result(request.user, int(result))
         #Try to close the game
         game.end_game()
         print("REUSLT", result)
@@ -36,7 +35,7 @@ def draw_game(request, game_id):
 
     context = {'word': word}
     return render(request, template_name="game/index.html", context=context)
-
+ 
 def ChallengeFriend(request):
     "Draws the challenge friend page"
     error = False
@@ -45,12 +44,12 @@ def ChallengeFriend(request):
     if request.method == 'POST':
         username = request.POST.get('friend_to_challenge')
         try:
-            if GameInvite.objects.get(sender=request.user, receiver=User.objects.get(username=username), active=True):
+            if GameInvite.objects.get(sender=request.user, receiver=User.objects.get(username=username), active=True): #Does the invite exist?
                 error = True  
 
         except Exception as e:
             if (str(e) == "GameInvite matching query does not exist."):
-                GameInvite.objects.create(sender=request.user, receiver=User.objects.get(username=username))
+                GameInvite.objects.create(sender=request.user, receiver=User.objects.get(username=username)) #Create the invite if it doesnt
 
     #Returns all friends of the user for context
     fl = FriendList.objects.get(user = request.user)
@@ -102,3 +101,9 @@ def decline_challenge(request, friend_id):
     invite = GameInvite.objects.get(sender = User.objects.get(username=friend_id), receiver=request.user)
     invite.decline_invite()
     return redirect('challenges')
+
+def leaderboard(request, leaderboard_type):
+    finished_games = GameLobby.objects.filter(GameFinished = True)
+    for game in finished_games:
+        game.get_winner()
+    pass

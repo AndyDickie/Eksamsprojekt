@@ -1,8 +1,10 @@
+import re
 from django.shortcuts import render, redirect
-
+from itertools import chain
 from django.contrib.auth.models import User
 from .forms import Signup
-from .models import FriendList
+from .models import FriendList, Profile
+from Game.models import GameInvite, GameLobby
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
@@ -134,3 +136,39 @@ def remove_friend(request, friend_id):
     other_fl.remove_friend(request.user)
     print(friend_id)
     return redirect('add_friend')
+
+@login_required
+def profile(request, user_id):
+    user = User.objects.get(pk = user_id)
+
+    completed_games = list(chain(GameLobby.objects.filter(Player_1=user, GameFinished = True), GameLobby.objects.filter(Player_2=user, GameFinished = True)))
+    game_status = [[game.playing_against(user), game.get_winner()] for game in completed_games]
+    
+    #Returns the game where the user has finished the game, but is waiting for the opponent
+    pending_games = list(chain(GameLobby.objects.filter(Player_1=user, Player_1_Finished = True, GameFinished = False, Player_2_Finished = False), GameLobby.objects.filter(Player_2=user, Player_2_Finished = True, GameFinished = False, Player_1_Finished = False)))
+    print(pending_games)
+
+    user_results = Profile.objects.get(pk=user_id)
+    wins = user_results.wins
+    draws = user_results.draws
+    losses = user_results.losses
+    
+    wdl = [[wins, draws, losses]] #Sent as a list of lists for easier unpacking in HTML
+
+    context = {
+        'games': completed_games,
+        'game_status': game_status,
+        'pending': pending_games,
+        'WDL': wdl,
+    }
+    return render(request, 'profile.html', context)
+
+def leaderboard(request, leaderboard_type="global"):
+    if leaderboard_type == "friends":
+        t = Profile.objects.all().order_by('-wins')
+        print(t)
+    elif leaderboard_type == "global":
+        pass
+    
+    context = {}
+    return render(request, 'home.html', context)
