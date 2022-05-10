@@ -11,7 +11,7 @@ def create_FriendList(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def create_FriendList(sender, instance, created, **kwargs):
+def create_Profile(sender, instance, created, **kwargs):
     "creates Profile model to the user that has been created"
     if created:
         Profile.objects.create(user=instance).save()
