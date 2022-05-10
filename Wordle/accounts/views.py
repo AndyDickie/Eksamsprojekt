@@ -153,8 +153,8 @@ def profile(request, user_id):
     print("pending games", pending_games)
     if pending_games:
         bool = True
-
-    user_results = Profile.objects.get(pk=user_id)
+    
+    user_results = Profile.objects.get(user=user)
     #Sent as list of list for easy unpacking in html
     stats = [[user_results.wins, user_results.draws, user_results.losses, user_results.av_moves, user_results.total_games]] 
 
