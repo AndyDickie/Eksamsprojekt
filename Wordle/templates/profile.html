@@ -1,14 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{user.username}}</h1>
-{% for win, draw, los in WDL %}
-    <h1>WINS: {{win}}, DRAW: {{draw}}, LOSS: {{los}}</h1>
+<h1 class="text-center">Profile page of {{user.username}}</h1>
+{% for win, draw, los, av_moves, total_games in stats %}
+    <div class="container justify-content-center">
+        <div class="row">
+            <div class="col"><h2 class="text-center text-success">Wins: {{win}}</h2></div>
+            <div class="col "><h2 class="text-center text-secondary">Draws: {{draw}}</h2></div>
+            <div class="col "><h2 class="text-center text-danger">Losses: {{los}}</h2></div>
+        </div>
+    </div>
 {% endfor %}
-{% for game in games %}
-    <h1>{{game}}</h1>
-{% endfor %}
-{% for opp, res in game_status %}
-    <h1>{{opp}}  {{res}}</h1>
-{% endfor %}
+
+<h4 class="text-center pt-4">Result of last 10 games</h4>
+<div class="d-flex p-4 justify-content-center pt-0">
+    <div class="col mx-5">
+        <table class="table table-hover table-bordered table-striped caption-top" id="table_results">
+            <caption>Results of your last 10 games</caption>
+            <thead>
+                <th scope="col">Game</th>
+                <th scope="col">Winner</th>
+                <th scope="col">View details</th>
+            </thead>
+            <tbody>
+                {% for opp, res, id in game_status %}
+                <tr>
+                    <td>{{opp}}</td>
+                    <td>{{res}}</td>
+                    <div>
+                        <td><a href="{% url 'game_details' game_id=id%}" class=""><i class="bi bi-globe"></i></a>
+                        View Details of this game
+                        </td>
+                    </div>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if bool %}
+    <h4 class="text-center">Waiting for opponent to finish...</h4>
+    {% for game in pending %}
+        <h6 class="text-center text-warning">{{game}}</h6>
+    {% endfor %}
+{% endif %}
+
 {% endblock %}

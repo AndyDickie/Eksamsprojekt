@@ -133,6 +133,12 @@ class GameLobby(models.Model):
             self.GameFinished = True
             self.add_points(account=self.Player_1)
             self.add_points(account=self.Player_2)
+            #get the players profile
+            user_1 = Profile.objects.get(user=self.Player_1)
+            user_2 = Profile.objects.get(user=self.Player_2)
+            #Updates the av_moves score
+            user_1.update_av_moves(guesses = self.Player_1_Moves)
+            user_2.update_av_moves(guesses = self.Player_2_Moves)
             self.save()
 
     

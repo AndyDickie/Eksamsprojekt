@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for p1, w1, p1m, p2, w2, p2m, winner in stats%}
+<div class="container">
+<h2 class="text-center">Game Result: {{winner}}</h2>
+<h3 class="text-center">Stats for: {{p1}}</h3>
+<h5 class="text-center">Word to guess: {{w1}}</h5>
+<h5 class="text-center">Used moves: {{p1m}}</h5>
+<h3 class="text-center">Stats for: {{p2}}</h3>
+<h5 class="text-center">Word to guess: {{w2}}</h5>
+<h5 class="text-center">Used moves: {{p2m}}</h5>
+</div>
+
+{% endfor %}
+{% endblock %}

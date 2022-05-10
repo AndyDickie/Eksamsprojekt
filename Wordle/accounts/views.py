@@ -1,3 +1,4 @@
+from email import iterators
 import re
 from django.shortcuts import render, redirect
 from itertools import chain
@@ -7,6 +8,7 @@ from .models import FriendList, Profile
 from Game.models import GameInvite, GameLobby
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import itertools
 
 
 def signup(request):
@@ -140,35 +142,50 @@ def remove_friend(request, friend_id):
 @login_required
 def profile(request, user_id):
     user = User.objects.get(pk = user_id)
+    bool = False
 
-    completed_games = list(chain(GameLobby.objects.filter(Player_1=user, GameFinished = True), GameLobby.objects.filter(Player_2=user, GameFinished = True)))
-    game_status = [[game.playing_against(user), game.get_winner()] for game in completed_games]
+    completed_games = list(chain(GameLobby.objects.filter(Player_1=user, GameFinished = True), GameLobby.objects.filter(Player_2=user, GameFinished = True)))[:10]
+    game_status = [[game.playing_against(user), game.get_winner(), game.id] for game in completed_games]
     
     #Returns the game where the user has finished the game, but is waiting for the opponent
     pending_games = list(chain(GameLobby.objects.filter(Player_1=user, Player_1_Finished = True, GameFinished = False, Player_2_Finished = False), GameLobby.objects.filter(Player_2=user, Player_2_Finished = True, GameFinished = False, Player_1_Finished = False)))
-    print(pending_games)
+    pending_games = [game.playing_against(user) for game in pending_games]
+    print("pending games", pending_games)
+    if pending_games:
+        bool = True
 
     user_results = Profile.objects.get(pk=user_id)
-    wins = user_results.wins
-    draws = user_results.draws
-    losses = user_results.losses
-    
-    wdl = [[wins, draws, losses]] #Sent as a list of lists for easier unpacking in HTML
+    #Sent as list of list for easy unpacking in html
+    stats = [[user_results.wins, user_results.draws, user_results.losses, user_results.av_moves, user_results.total_games]] 
 
     context = {
-        'games': completed_games,
         'game_status': game_status,
         'pending': pending_games,
-        'WDL': wdl,
+        'stats': stats,
+        'bool': bool
     }
     return render(request, 'profile.html', context)
 
 def leaderboard(request, leaderboard_type="global"):
     if leaderboard_type == "friends":
-        t = Profile.objects.all().order_by('-wins')
-        print(t)
+        user = request.user
+        friends = FriendList.objects.get(user=user).friends.all()
+        profiles = Profile.objects.filter(user__in = friends)
+        user_profile = Profile.objects.filter(user=request.user)
+        profiles = profiles.union(user_profile).order_by('-wins')[:50]
+        counter = itertools.count(1)
+        stats = [[user.wins, user.draws, user.losses, user, next(counter), user.av_moves, user.total_games] for user in profiles]
+        type = "Friends"
+        
     elif leaderboard_type == "global":
-        pass
+        counter = itertools.count(1)
+        profiles = Profile.objects.all().order_by('-wins')[:50]
+        stats = [[user.wins, user.draws, user.losses, user, next(counter), user.av_moves, user.total_games] for user in profiles]
+        type = "Global"
     
-    context = {}
-    return render(request, 'home.html', context)
+    context = {
+        'profiles': profiles,
+        'stats': stats,
+        'type': type
+        }
+    return render(request, 'leaderboard.html', context)

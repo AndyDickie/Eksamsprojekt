@@ -1,4 +1,5 @@
 from itertools import chain
+from multiprocessing import context
 from accounts.models import FriendList
 from Game.models import GameLobby, GameInvite, random_word
 from django.contrib.auth.models import User
@@ -102,8 +103,11 @@ def decline_challenge(request, friend_id):
     invite.decline_invite()
     return redirect('challenges')
 
-def leaderboard(request, leaderboard_type):
-    finished_games = GameLobby.objects.filter(GameFinished = True)
-    for game in finished_games:
-        game.get_winner()
-    pass
+def view_game_details(request, game_id):
+    game = GameLobby.objects.get(pk=game_id)
+    stats = [[game.Player_1, game.word_1, game.Player_1_Moves, game.Player_2, game.word_2, game.Player_2_Moves, game.get_winner()]]
+    
+    context = {
+        'stats': stats,
+    }
+    return render(request, 'game/game_details.html', context)

@@ -8,7 +8,6 @@ let næsteBogstav = 0;
 let rigtigGætString = document.getElementById("word").innerText;
 console.log(rigtigGætString)
 
-
 function post_results(result) {
     var result_input = document.createElement("INPUT");
     result_input.setAttribute("id", "result");
@@ -122,6 +121,7 @@ function checkGuess () {
         } else {
             if (nuværendeGæt[i] == rigtigGæt[i]) {
                 bogstavFarve = 'green'
+                console.log(rigtigGæt[i] + i)
                 rigtigGæt[i]='#'
             } else {
                 bogstavFarve = 'yellow'
@@ -144,7 +144,6 @@ function checkGuess () {
                 
                 
             }
-            rigtigGæt[i] = '#'
         }
         let delay = 250 * i
         setTimeout(()=> {
@@ -156,7 +155,8 @@ function checkGuess () {
     if (gætString === rigtigGætString){
         // POST METHOD HERE
         toastr.success("Du gættede det/You guessed it");
-        setTimeout(function(){post_results(antalGættede);}, 7000);
+        document.getElementById("spinner").removeAttribute("hidden")
+        setTimeout(function(){post_results(antalGættede);}, 5000);
         resterendeGæt=0;
         return
     } else {
@@ -169,7 +169,8 @@ function checkGuess () {
             // POST METHOD HERE
             toastr.error("du tabte/you lost");
             toastr.info(`Rigtige ord/correct word: "${rigtigGætString}"`)
-            setTimeout(function(){post_results(antalGættede);}, 7000);
+            document.getElementById("spinner").removeAttribute("style")
+            setTimeout(function(){post_results(antalGættede);}, 5000);
         }
     }
 }

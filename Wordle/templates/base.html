@@ -10,7 +10,7 @@
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
   {% block css %}
   {% endblock %}
 </head>
@@ -54,6 +54,32 @@
         </div>
       </div>
     </nav>
+    {% if user.is_authenticated%}
+    <a class="float-start p-0 m-0" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" style="font-size: 4rem;"><i class="bi bi-list p-0 m-0"></i></a>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div>
+          <h2>Online Worlde</h2>
+        </div>
+        <div class="mt-4 mx-1">
+        <a href="{% url 'challenges' %}" class="btn btn-secondary">Manage Games</a>
+          <div>Send challenges to your friends, and see incoming challenges. Additionally play singleplayer practice mode!</div>
+        </div>
+        <div class="mt-4 mx-1">
+          <a href="{% url 'accounts' %}" class="btn btn-secondary">Manage Friends</a>
+          <div>Add and remove friends, aswell as block users, making them unable to add you. To lift the blockage, simply add them again.</div>
+        </div>
+        <div class="mt-4 mx-1">
+          <a href="{% url 'leaderboard' %}" class="btn btn-secondary">Leaderboards</a>
+          <div>View the global leaderboard, aswell as your friends leaderboard.</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
     {% block content %}
     {% endblock %}
   </main>

@@ -44,6 +44,9 @@ class Profile(models.Model):
     wins = models.IntegerField(default=0, name="wins")
     draws = models.IntegerField(default=0, name="draws")
     losses = models.IntegerField(default=0, name="losses")
+    total_guesses = models.IntegerField(default=0, name="total_guesses")
+    total_games = models.IntegerField(default=0, name="total_games")
+    av_moves = models.FloatField(default=0, name='av_moves')
 
     def add_win(self):
         self.wins += 1
@@ -57,6 +60,13 @@ class Profile(models.Model):
         self.losses += 1
         self.save()
 
+    def update_av_moves(self, guesses: int):
+        self.total_games += 1
+        self.total_guesses += guesses
+        av_moves = self.total_guesses/self.total_games
+        self.av_moves = av_moves
+        self.save()
+        
     def __str__(self):
         return(self.user.username)
 

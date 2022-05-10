@@ -102,7 +102,7 @@
                             <td>{{ga}}</td>
                         {%endfor%}
                         <td>
-                            <a href=" {% url 'gametest' game_id=game.id%}"><i class="bi bi-hourglass-split float-end"></i></a>
+                            <a href=" {% url 'play' game_id=game.id%}"><i class="bi bi-hourglass-split float-end"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
