@@ -3,13 +3,24 @@
 {% block content %}
 <h1 class="text-center">Profile page of {{user.username}}</h1>
 {% for win, draw, los, av_moves, total_games in stats %}
-    <div class="container justify-content-center">
-        <div class="row">
-            <div class="col"><h2 class="text-center text-success">Wins: {{win}}</h2></div>
-            <div class="col "><h2 class="text-center text-secondary">Draws: {{draw}}</h2></div>
-            <div class="col "><h2 class="text-center text-danger">Losses: {{los}}</h2></div>
+<div class="container justify-content-center">
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center text-success">Wins: {{win}}</h2>
+        </div>
+        <div class="col ">
+            <h2 class="text-center text-secondary">Draws: {{draw}}</h2>
+        </div>
+        <div class="col ">
+            <h2 class="text-center text-danger">Losses: {{los}}</h2>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center">Average Moves: {{av_moves}}</h2>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
 <h4 class="text-center pt-4">Result of last 10 games</h4>
@@ -29,7 +40,7 @@
                     <td>{{res}}</td>
                     <div>
                         <td><a href="{% url 'game_details' game_id=id%}" class=""><i class="bi bi-globe"></i></a>
-                        View Details of this game
+                            View Details of this game
                         </td>
                     </div>
                 </tr>
@@ -40,10 +51,10 @@
 </div>
 
 {% if bool %}
-    <h4 class="text-center">Waiting for opponent to finish...</h4>
-    {% for game in pending %}
-        <h6 class="text-center text-warning">{{game}}</h6>
-    {% endfor %}
+<h4 class="text-center">Waiting for opponent to finish...</h4>
+{% for game in pending %}
+<h6 class="text-center text-warning">{{game}}</h6>
+{% endfor %}
 {% endif %}
 
 {% endblock %}
