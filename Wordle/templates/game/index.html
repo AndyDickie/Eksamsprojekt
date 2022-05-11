@@ -1,41 +1,33 @@
-
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 {% block css %}
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Wordle-Online</title>
-    <link rel="stylesheet" href="{% static '/css/style.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-      />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Wordle-Online</title>
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 {% endblock %}
 
 {% block content %}
-    <div hidden id="word">{{word}}</div>
-    <h1> Wordle Online </h1>
-        
-    <div id="spil-side">
+<div hidden id="word">{{word}}</div>
+<h1> Wordle Online </h1>
 
+<div id="spil-side">
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{% static '/js/script.js' %}" type="module"></script>
+
+<form hidden id="result_form" method="POST">
+    {% csrf_token %}
+</form>
+
+<div class="d-flex justify-content-center m-5" id="spinner" style="visibility: hidden;">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
-    <script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="{% static '/js/script.js' %}" type="module"></script>
-
-    <form hidden id="result_form" method="POST">
-        {% csrf_token %}
-    </form>
-
-    <div class="d-flex justify-content-center m-5" id="spinner" style="visibility: hidden;">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>You are being redirected...</p>
-    </div>
+    <p>You are being redirected...</p>
+</div>
 {% endblock %}
-
-

@@ -67,47 +67,47 @@ document.addEventListener("keyup", (e) => {
     }
 })
 
-function insertLetter (trykketKnap) {
+function insertLetter(trykketKnap) {
     if (næsteBogstav === 5) {
         return
     }
     trykketKnap = trykketKnap.toLowerCase()
 
-    let række = document.getElementsByClassName("bogstav-række")[6-resterendeGæt]
+    let række = document.getElementsByClassName("bogstav-række")[6 - resterendeGæt]
     let kasse = række.children[næsteBogstav]
-    kasse.textContent=trykketKnap
+    kasse.textContent = trykketKnap
     kasse.classList.add("fyldt-kasse")
     nuværendeGæt.push(trykketKnap)
     næsteBogstav += 1
 }
 
-function deleteLetter () {
-let række = document.getElementsByClassName("bogstav-række")[6-resterendeGæt]
-let kasse = række.children[næsteBogstav - 1]
-kasse.textContent= ""
-kasse.classList.remove("fyldt-kasse")
-nuværendeGæt.pop()
-næsteBogstav -= 1
+function deleteLetter() {
+    let række = document.getElementsByClassName("bogstav-række")[6 - resterendeGæt]
+    let kasse = række.children[næsteBogstav - 1]
+    kasse.textContent = ""
+    kasse.classList.remove("fyldt-kasse")
+    nuværendeGæt.pop()
+    næsteBogstav -= 1
 }
 
-function checkGuess () {
-    let række = document.getElementsByClassName("bogstav-række")[6-resterendeGæt]
+function checkGuess() {
+    let række = document.getElementsByClassName("bogstav-række")[6 - resterendeGæt]
     let gætString = ''
     let rigtigGæt = Array.from(rigtigGætString)
 
-    for (const val of nuværendeGæt){
+    for (const val of nuværendeGæt) {
         gætString += val
     }
 
-    if (gætString.length != 5){
+    if (gætString.length != 5) {
         toastr.error("ikke nok bogstaver/not enough letters")
         return
     }
 
-    if (!ORD.includes(gætString)){
+    if (!ORD.includes(gætString)) {
         console.log("ord findes ikke");
         toastr.error("ord ikke i listen")
-        return 
+        return
     }
 
     for (let i = 0; i < 5; i++) {
@@ -122,13 +122,13 @@ function checkGuess () {
             if (nuværendeGæt[i] == rigtigGæt[i]) {
                 bogstavFarve = 'green'
                 console.log(rigtigGæt[i] + i)
-                rigtigGæt[i]='#'
+                rigtigGæt[i] = '#'
             } else {
                 bogstavFarve = 'yellow'
                 if (nuværendeGæt.indexOf(nuværendeGæt[i]) != nuværendeGæt.lastIndexOf(nuværendeGæt[i])) { //Does the guess letter contain more than one instance of letter at index i?
                     if (bogstavPosition != rigtigGæt.lastIndexOf(nuværendeGæt[i])) { //Does the correct answer contain more than one instance of letter at index i?
                         //safe to color yellow
-                        bogstavFarve = 'yellow' 
+                        bogstavFarve = 'yellow'
                     } else {
                         //The guess contains duplicate letter while correct is one?
                         if (nuværendeGæt.lastIndexOf(nuværendeGæt[i]) == bogstavPosition) { //The current letter at guess is wrong, so color it grey
@@ -139,25 +139,25 @@ function checkGuess () {
                         }
 
                     }
-                    
+
                 }
-                
-                
+
+
             }
         }
         let delay = 250 * i
-        setTimeout(()=> {
+        setTimeout(() => {
             //shade box
             kasse.style.backgroundColor = bogstavFarve
             //shadeKeyBoard(letter, letterColor)
         }, delay)
     }
-    if (gætString === rigtigGætString){
+    if (gætString === rigtigGætString) {
         // POST METHOD HERE
         toastr.success("Du gættede det/You guessed it");
         document.getElementById("spinner").removeAttribute("hidden")
-        setTimeout(function(){post_results(antalGættede);}, 5000);
-        resterendeGæt=0;
+        setTimeout(function () { post_results(antalGættede); }, 5000);
+        resterendeGæt = 0;
         return
     } else {
         resterendeGæt -= 1;
@@ -165,12 +165,12 @@ function checkGuess () {
         næsteBogstav = 0;
         toastr.error("forkert gæt");
 
-        if (resterendeGæt === 0){
+        if (resterendeGæt === 0) {
             // POST METHOD HERE
             toastr.error("du tabte/you lost");
             toastr.info(`Rigtige ord/correct word: "${rigtigGætString}"`)
             document.getElementById("spinner").removeAttribute("style")
-            setTimeout(function(){post_results(antalGættede);}, 5000);
+            setTimeout(function () { post_results(antalGættede); }, 5000);
         }
     }
 }

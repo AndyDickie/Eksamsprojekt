@@ -6,49 +6,49 @@
 {% block css %}
 <style>
     .table-responsive {
-        max-height:300px;
-}
+        max-height: 300px;
+    }
 </style>
 {% endblock %}
-        
+
 
 {% block content %}
-    <div class="container bg-primary p-2 my-2 text-center">
-        <h1>Block Friends<h1>
-    </div>
+<div class="container bg-primary p-2 my-2 text-center">
+    <h1>Block Friends<h1>
+</div>
 
-    <div class="container d-flex justify-content-center">
-        <form action = "" method="post">
-            {%csrf_token%}
-            <label for="block_username">Select username: </lable>
+<div class="container d-flex justify-content-center">
+    <form action="" method="post">
+        {%csrf_token%}
+        <label for="block_username">Select username: </lable>
             <select class="selectpicker" data-live-search="true" name="name_field" id="block_username" type="text">
                 <option value="">Select User</option>
                 {% for user in users %}
-                    <option value="{{user.username}}">{{user.username}}</option>
+                <option value="{{user.username}}">{{user.username}}</option>
                 {% endfor %}
             </select>
-   
-            <button type="submit" class="btn btn-primary">Block User</button>
-        </form>
-    </div>
 
-    <div class="row align-items-start table-responsive">
-        <div class="col-5">.</div>
-        <div class="col-2">
+            <button type="submit" class="btn btn-primary">Block User</button>
+    </form>
+</div>
+
+<div class="row align-items-start table-responsive">
+    <div class="col-5">.</div>
+    <div class="col-2">
         <table class="table table-hover border">
             <thead>
                 <th scope="col"> Friends </th>
             </thead>
             <tbody>
                 {% for friend in friends %}
-                    <tr>
-                        <td>{{friend.username}}</td>
-                    </tr>
+                <tr>
+                    <td>{{friend.username}}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-    <div>
-    </div>
+        <div>
+        </div>
 
 
-{% endblock %}
+        {% endblock %}

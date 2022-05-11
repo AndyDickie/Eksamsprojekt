@@ -5,8 +5,8 @@
     <h1>Pending Challenges<h1>
 </div>
 <div class="row align-items-start table-responsive m-3">
-        <div class="col-5">.</div>
-        <div class="col-2">
+    <div class="col-5">.</div>
+    <div class="col-2">
         <table class="table table-hover border">
             <thead>
                 <th scope="col"> Invites </th>
@@ -14,13 +14,15 @@
             </thead>
             <tbody>
                 {% for challenge in pending_challenges %}
-                    <tr>
-                        <td>{{challenge.username}}</td>
-                        <td>
-                            <a href=" {% url 'decline_invite' friend_id=challenge.username %}" class="float-end"><i class="bi bi-x-circle-fill text-danger"></i></a>
-                            <a href=" {% url 'accept_invite' friend_id=challenge.username %}" class="float-end me-2"><i class="bi bi-check-circle-fill text-success"></i></a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{challenge.username}}</td>
+                    <td>
+                        <a href=" {% url 'decline_invite' friend_id=challenge.username %}" class="float-end"><i
+                                class="bi bi-x-circle-fill text-danger"></i></a>
+                        <a href=" {% url 'accept_invite' friend_id=challenge.username %}" class="float-end me-2"><i
+                                class="bi bi-check-circle-fill text-success"></i></a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -30,29 +32,32 @@
 <div class="text-center">
     <h1>Challenge Friends<h1>
 </div>
-{% if error_bool %} 
+{% if error_bool %}
 <div class="container" id="test">
-  <div style="width: 300px; margin:auto" class="mb-1 alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-      class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
-      <path
-        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-    </svg>
-    <div style="text-align: center">
-      You have already sent an invite to the user!
+    <div style="width: 300px; margin:auto" class="mb-1 alert alert-danger alert-dismissible d-flex align-items-center"
+        role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+            class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img"
+            aria-label="Warning:">
+            <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </svg>
+        <div style="text-align: center">
+            You have already sent an invite to the user!
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
 </div>
 {% endif %}
 
 <div class="d-flex justify-content-center m-3">
-    <form action = "" method="post">
+    <form action="" method="post">
         {%csrf_token%}
-        <input type="text" name="friend_to_challenge" list="friend_challenge" placeholder="Enter username..." autocomplete="off">
-        <datalist id="friend_challenge"> 
+        <input type="text" name="friend_to_challenge" list="friend_challenge" placeholder="Enter username..."
+            autocomplete="off">
+        <datalist id="friend_challenge">
             {% for friend in friends %}
-                <option value="{{friend.username}}">{{friend.username}}</option>
+            <option value="{{friend.username}}">{{friend.username}}</option>
             {% endfor %}
         </datalist>
         <button type="submit" class="btn btn-primary p-2">Send Challenge</button>
@@ -63,8 +68,8 @@
     <h1>Sent Challenges<h1>
 </div>
 <div class="row align-items-start table-responsive m-3">
-        <div class="col-5">.</div>
-        <div class="col-2">
+    <div class="col-5">.</div>
+    <div class="col-2">
         <table class="table table-hover border">
             <thead>
                 <th scope="col"> Invites </th>
@@ -72,12 +77,12 @@
             </thead>
             <tbody>
                 {% for challenge in sent_challenges %}
-                    <tr>
-                        <td>{{challenge.username}}</td>
-                        <td>
-                            <i class="bi bi-hourglass-split float-end"></i>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{challenge.username}}</td>
+                    <td>
+                        <i class="bi bi-hourglass-split float-end"></i>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -88,8 +93,8 @@
     <h1>Active Games<h1>
 </div>
 <div class="row align-items-start table-responsive m-3">
-        <div class="col-5">.</div>
-        <div class="col-2">
+    <div class="col-5">.</div>
+    <div class="col-2">
         <table class="table table-hover border">
             <thead>
                 <th scope="col"> Games </th>
@@ -97,14 +102,14 @@
             </thead>
             <tbody>
                 {% for game in active_games %}
-                    <tr>
-                        {% for ga in game_against %}
-                            <td>{{ga}}</td>
-                        {%endfor%}
-                        <td>
-                            <a href=" {% url 'play' game_id=game.id%}"><i class="bi bi-hourglass-split float-end"></i></a>
-                        </td>
-                    </tr>
+                <tr>
+                    {% for ga in game_against %}
+                    <td>{{ga}}</td>
+                    {%endfor%}
+                    <td>
+                        <a href=" {% url 'play' game_id=game.id%}"><i class="bi bi-hourglass-split float-end"></i></a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -115,5 +120,5 @@
 <div class="container text-center">
     <a href="{% url 'singleplayer' %}" class="btn btn-secondary btn-sm">Play practice-mode</a>
 </div>
-    
+
 {% endblock %}
