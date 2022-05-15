@@ -55,9 +55,7 @@ def ChallengeFriend(request):
     #Returns all friends of the user for context
     fl = FriendList.objects.get(user = request.user)
     friends = fl.friends.all()
-    #users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
 
-    
     #Returns active game invites to the user
     challenges = GameInvite.objects.filter(receiver = request.user)
     userName_challenge = []

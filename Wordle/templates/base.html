@@ -35,15 +35,16 @@
 
           {% if user.is_authenticated%}
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
-                aria-controls="offcanvasExample" style="font-size: 2rem;"><i class="bi bi-list p-0 m-0"></i></a>
-            </li>
+
             <li class="nav-item" id="logout_button">
               <a class="nav-link" href=" {% url 'logout' %}">Logout</a>
             </li>
             <li class="nav-item" id="profile">
               <a class="nav-link" href="{% url 'profile' user_id=user.id %}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                aria-controls="offcanvasExample" style="font-size: 1.75rem;"><i class="bi bi-list p-0 m-0"></i></a>
             </li>
           </ul>
 
@@ -86,6 +87,10 @@
         <div class="mt-4 mx-1">
           <a href="{% url 'leaderboard' %}" class="btn btn-secondary">Leaderboards</a>
           <div>View the global leaderboard, aswell as your friends leaderboard.</div>
+        </div>
+        <div class="mt-4 mx-1">
+          <a href="{% url 'profile' user_id=user.id %}" class="btn btn-secondary">Profile</a>
+          <div>View your results and details of last games</div>
         </div>
       </div>
     </div>

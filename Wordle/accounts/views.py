@@ -13,9 +13,9 @@ import itertools
 
 def signup(request):
     "signup"
-    form = Signup()
+    form = Signup() #Signupform containing email, username and password
     context = {
-        'form': form,
+        'form': form, #The form is passed with the context to be drawn in html
         'error': [],
         'error_bool': False,
     }
@@ -72,26 +72,27 @@ def login_user(request):
 @login_required 
 def add_friend(request):
     "add_friend"
+    user = request.user
     if request.method == 'POST':
         username_ = request.POST.get('friend_name')
         print(username_)
         friend_user = User.objects.get(username = username_)
-        user = request.user
         
-        fl = FriendList.objects.get(user = user)
-        other_fl = FriendList.objects.get(user = friend_user)
         
-        if not user in other_fl.blocked_users.all():
+        fl = FriendList.objects.get(user = user) #friendlist of the user
+        other_fl = FriendList.objects.get(user = friend_user) #friendlist of the other user
+        
+        if not user in other_fl.blocked_users.all(): #Is the user not blocked by the other user?
             fl.add_friend(friend_user)
             other_fl.add_friend(user)
             fl.save()
 
-        if user in other_fl.blocked_users.all():
+        if user in other_fl.blocked_users.all(): #the user is blocked
             raise ValueError("The user has blocked you")
-    
-    fl = FriendList.objects.get(user = request.user)
-    friends = fl.friends.all()
-    users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username])
+
+    fl = FriendList.objects.get(user = user)
+    friends = fl.friends.all() #returns all the friends on the friendlist
+    users = User.objects.exclude(username__in = [user.username for user in friends] + [request.user.username]) #returns all the users
        
     context = {
         'users': users,
@@ -128,11 +129,11 @@ def block_user(request):
 @login_required
 def remove_friend(request, friend_id):
     "remove_friend"
-     
+    friend_to_remove = User.objects.get(username = friend_id)
     fl = FriendList.objects.get(user = request.user)
     other_fl = FriendList.objects.get(user = friend_to_remove)
 
-    friend_to_remove = User.objects.get(username = friend_id)
+    
     
     fl.remove_friend(friend_to_remove)
     other_fl.remove_friend(request.user)
@@ -166,26 +167,27 @@ def profile(request, user_id):
     }
     return render(request, 'profile.html', context)
 
+@login_required
 def leaderboard(request, leaderboard_type="global"):
     if leaderboard_type == "friends":
         user = request.user
         friends = FriendList.objects.get(user=user).friends.all()
         profiles = Profile.objects.filter(user__in = friends)
         user_profile = Profile.objects.filter(user=request.user)
-        profiles = profiles.union(user_profile).order_by('-wins')[:50]
+        profiles = profiles.union(user_profile).order_by('-wins')
         counter = itertools.count(1)
         stats = [[user.wins, user.draws, user.losses, user, next(counter), user.av_moves, user.total_games] for user in profiles]
-        type = "Friends"
+        type_ = "Friends"
         
     elif leaderboard_type == "global":
         counter = itertools.count(1)
-        profiles = Profile.objects.all().order_by('-wins')[:50]
+        profiles = Profile.objects.all().order_by('-wins')
         stats = [[user.wins, user.draws, user.losses, user, next(counter), user.av_moves, user.total_games] for user in profiles]
-        type = "Global"
+        type_ = "Global"
     
     context = {
         'profiles': profiles,
         'stats': stats,
-        'type': type
+        'type': type_
         }
     return render(request, 'leaderboard.html', context)

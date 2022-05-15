@@ -16,17 +16,16 @@ class GameInvite(models.Model):
     Accepteres invitationen, bliver invitationen inaktiv, og et spil laves.
     """
 
-    #sender = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sender')
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='sender', on_delete=models.CASCADE)
-    #receiver = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='receiver')
+    
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='receiver', on_delete=models.CASCADE)
+
     active = models.BooleanField(default=True)
 
     def accept_invite(self):
         "accepts invite, and creates a instance og game_lobby object"
         self.active = False
         self.save()
-        print("SSSSSSS", self.sender, self.receiver, self)
         game = GameLobby(Player_1 = self.sender, Player_2 = self.receiver, game_invite = self)
         game.save()
         print("ACCEPTED")

@@ -149,14 +149,13 @@ function checkGuess() {
         setTimeout(() => {
             //shade box
             kasse.style.backgroundColor = bogstavFarve
-            //shadeKeyBoard(letter, letterColor)
         }, delay)
     }
     if (gætString === rigtigGætString) {
         // POST METHOD HERE
         toastr.success("Du gættede det/You guessed it");
         document.getElementById("spinner").removeAttribute("hidden")
-        setTimeout(function () { post_results(antalGættede); }, 5000);
+        setTimeout(function () { post_results(antalGættede); }, 5000); //resultet postes
         resterendeGæt = 0;
         return
     } else {
@@ -170,7 +169,7 @@ function checkGuess() {
             toastr.error("du tabte/you lost");
             toastr.info(`Rigtige ord/correct word: "${rigtigGætString}"`)
             document.getElementById("spinner").removeAttribute("style")
-            setTimeout(function () { post_results(antalGættede); }, 5000);
+            setTimeout(function () { post_results(antalGættede); }, 5000); //resultatet postes
         }
     }
 }
